@@ -18,13 +18,13 @@ public class MyGdxGame extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture background,bottomTube,topTube;
 	//ShapeRenderer shapeRenderer;// just like batch
-    Texture gameover;
+    Texture gameover,gamestart;
 
 	Circle birdCircle;
 	int score=0;
 	int scoringTube=0;
 	BitmapFont font;
-
+    boolean go = true;
 	int maxHeight;
 	int flapState=0;
 	Texture[] birds;
@@ -51,14 +51,16 @@ public class MyGdxGame extends ApplicationAdapter {
 		font=new BitmapFont();
 		font.setColor(Color.WHITE);
 		font.getData().setScale(10);
-		background = new Texture("bg.png");
+
+		background = new Texture("bg1.jpeg");
 		bottomTube = new Texture("bottomtube.png");
 		topTube    = new Texture("toptube.png");
+		gamestart = new Texture("cheem_start.png");
         birds=new Texture[2];
         maxHeight=Gdx.graphics.getHeight();
-        gameover=new Texture("gameover.png");
-        birds[0]=new Texture("bird.png");
-		birds[1]=new Texture("bird2.png");
+        gameover=new Texture("game_over.png");
+        birds[0]=new Texture("cheem.png");
+		birds[1]=new Texture("cheem2.png");
 		maxTubeOffset=Gdx.graphics.getHeight()/2-gap/2-100;
 		randomGenerator=new Random();
 		//tubeX=Gdx.graphics.getWidth()/2-topTube.getWidth()/2;
@@ -83,6 +85,10 @@ public class MyGdxGame extends ApplicationAdapter {
 	public void render () {
 		batch.begin();
 		batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		//if(go) {
+		//	batch.draw(gamestart, Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 2 - Gdx.graphics.getHeight() / 8, Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 4);
+		//	go =false;
+		//}
 		if(gameState == 1) {
 
 			if(tubeX[scoringTube]<Gdx.graphics.getWidth()/2){
@@ -131,12 +137,14 @@ public class MyGdxGame extends ApplicationAdapter {
 			}
 
 		}else if(gameState == 0){
+			batch.draw(gamestart, Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 2 - Gdx.graphics.getHeight() / 4, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
 			if(Gdx.input.justTouched()){
 				gameState=1;
 			}
 		}else if(gameState == 2){
-			batch.draw(gameover,Gdx.graphics.getWidth()/2-Gdx.graphics.getWidth()/8,Gdx.graphics.getHeight()/2-Gdx.graphics.getHeight()/8,Gdx.graphics.getWidth()/4,Gdx.graphics.getHeight()/4);
+			batch.draw(gameover,Gdx.graphics.getWidth()/2-Gdx.graphics.getWidth()/4,Gdx.graphics.getHeight()/2-Gdx.graphics.getHeight()/4,Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2);
 			if(Gdx.input.justTouched()){
+
 				startGame();
 				gameState=1;
 				score=0;
@@ -156,11 +164,11 @@ public class MyGdxGame extends ApplicationAdapter {
 		batch.end();
 		birdCircle.set(Gdx.graphics.getWidth()/2,birdY+birds[flapState].getHeight()/2,birds[flapState].getWidth()/2);
 		//shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-		//shapeRenderer.setColor(Color.RED);
-	    //shapeRenderer.circle(birdCircle.x,birdCircle.y,birdCircle.radius);
+	//	shapeRenderer.setColor(Color.RED);
+	  //  shapeRenderer.circle(birdCircle.x,birdCircle.y,birdCircle.radius);
 		for(int i=0;i<numberOfTubes;i++) {
-			//shapeRenderer.rect(tubeX[i], Gdx.graphics.getHeight() / 2 + gap / 2 + tubeOffset[i],topTube.getWidth(), Gdx.graphics.getHeight());
-		   // shapeRenderer.rect(tubeX[i], Gdx.graphics.getHeight() / 2 - Gdx.graphics.getHeight() - gap / 2 + tubeOffset[i], bottomTube.getWidth(), Gdx.graphics.getHeight());
+		//	shapeRenderer.rect(tubeX[i], Gdx.graphics.getHeight() / 2 + gap / 2 + tubeOffset[i],topTube.getWidth(), Gdx.graphics.getHeight());
+		 //   shapeRenderer.rect(tubeX[i], Gdx.graphics.getHeight() / 2 - Gdx.graphics.getHeight() - gap / 2 + tubeOffset[i], bottomTube.getWidth(), Gdx.graphics.getHeight());
 		    if(Intersector.overlaps(birdCircle,topTubeRectangles[i])||Intersector.overlaps(birdCircle,bottomTubeRectangles[i])){
 				gameState=2;
 			}
